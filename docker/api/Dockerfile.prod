@@ -1,0 +1,19 @@
+FROM node:18.18.0
+
+WORKDIR /app/
+
+COPY ./package*.json ./
+COPY ./src/ ./src/
+COPY ./astro.config.mjs ./
+COPY ./tsconfig.json ./
+
+ARG API_URL
+ENV API_URL=${API_URL}
+
+RUN npm install -g npm@9.8.1 && \
+	npm ci --production && \
+	npm run build
+
+EXPOSE 4001
+
+CMD node ./dist/server/entry.mjs

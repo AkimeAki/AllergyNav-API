@@ -1,0 +1,37 @@
+{
+	"folders": [
+		{
+			"name": "AllergyNav API",
+			"path": "."
+		}
+	],
+	"settings": {
+		"npm.packageManager": "npm",
+		"eslint.workingDirectories": ["./"],
+		"eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+		"[json]": {
+			"editor.formatOnSave": true,
+			"editor.defaultFormatter": "esbenp.prettier-vscode"
+		},
+		"[javascript]": {
+			"editor.formatOnSave": true,
+			"editor.defaultFormatter": "esbenp.prettier-vscode"
+		},
+		"[jsonc]": {
+			"editor.formatOnSave": true,
+			"editor.defaultFormatter": "esbenp.prettier-vscode"
+		},
+		"[typescript]": {
+			"editor.formatOnSave": true,
+			"editor.defaultFormatter": "esbenp.prettier-vscode"
+		},
+		"[yaml]": {
+			"editor.formatOnSave": true,
+			"editor.defaultFormatter": "esbenp.prettier-vscode"
+		},
+		"[dockercompose]": {
+			"editor.formatOnSave": true,
+			"editor.defaultFormatter": "esbenp.prettier-vscode"
+		}
+	}
+}

@@ -1,0 +1,48 @@
+services:
+  api:
+    build:
+      context: ./docker/api/
+      dockerfile: Dockerfile.dev
+    tty: true
+    stdin_open: true
+    init: true
+    environment:
+      TZ: Asia/Tokyo
+      CHOKIDAR_USEPOLLING: 1
+      HOST: 0.0.0.0
+    ports:
+      - "5002:5002"
+    working_dir: /api/
+    volumes:
+      - ./:/api/
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    build:
+      context: ./docker/db/
+      dockerfile: Dockerfile.dev
+    tty: true
+    stdin_open: true
+    environment:
+      TZ: Asia/Tokyo
+      MYSQL_ROOT_PASSWORD: root
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -uroot -proot
+
+  dbtool:
+    build:
+      context: ./docker/dbtool/
+      dockerfile: Dockerfile.dev
+    tty: true
+    stdin_open: true
+    ports:
+      - 5003:80
+    environment:
+      TZ: Asia/Tokyo
+      PMA_ARBITRARY: 1
+      PMA_HOSTS: db
+    depends_on:
+      db:
+        condition: service_healthy

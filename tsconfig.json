@@ -1,0 +1,12 @@
+{
+	"extends": "typescript-config/config/tsconfig",
+	"compilerOptions": {
+		"module": "commonjs",
+		"paths": {
+			"@/*": ["./src/*"]
+		},
+		"baseUrl": ".",
+		"declaration": false,
+		"outDir": "./dist/"
+	}
+}
