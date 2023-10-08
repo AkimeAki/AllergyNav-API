@@ -34,24 +34,50 @@ export default async function (req: express.Request, res: express.Response): Pro
 		let filterSql = "";
 		if (typeof keywords === "string") {
 			const keywordList = keywords.split(" ");
+
+			if (keywordList.length !== 0) {
+				filterSql += "(";
+			}
+
 			keywordList.forEach((keyword) => {
 				filterSql += `stores.name LIKE "%${keyword}%"`;
 				filterSql += " OR ";
 				filterSql += `menu.name LIKE "%${keyword}%"`;
 				filterSql += " OR ";
 			});
+
+			if (filterSql !== "") {
+				filterSql = filterSql.replace(/\sOR\s$/, "");
+			}
+
+			if (keywordList.length !== 0) {
+				filterSql += ")";
+			}
 		}
 
 		if (typeof allergen === "string") {
-			const allergenList = allergen.split(",");
-			allergenList.forEach((id) => {
-				filterSql += `allergens.id = "${id}"`;
-				filterSql += " OR ";
-			});
-		}
+			const allergenList = allergen.split(",").filter((item) => item !== "");
 
-		if (filterSql !== "") {
-			filterSql = filterSql.replace(/\sOR\s$/, "");
+			if (filterSql !== "") {
+				filterSql += " AND ";
+			}
+
+			if (allergenList.length !== 0) {
+				filterSql += "((";
+			}
+
+			allergenList.forEach((id) => {
+				filterSql += `allergens.id != "${id}"`;
+				filterSql += " AND ";
+			});
+
+			if (filterSql !== "") {
+				filterSql = filterSql.replace(/\sAND\s$/, "");
+			}
+
+			if (allergenList.length !== 0) {
+				filterSql += ") OR allergens.id IS NULL)";
+			}
 		}
 
 		const [rows] = await connection.query<StoresRow[]>(
